@@ -4,6 +4,7 @@ This C project explores the UNIX pipe operator, aiming to replicate its function
 
 ### Usage Examples
 
+
 ```bash
 ./pipex infile "ls -l" "wc -l" outfile
 ```
@@ -13,6 +14,7 @@ Behaves like:
 ```bash
 < infile ls -l | wc -l > outfile
 ```
+
 
 ```bash
 ./pipex infile "grep a1" "wc -w" outfile
@@ -26,7 +28,7 @@ Behaves like:
 
 ### Allowed Functions:
 `open`, `close`, `read`, `write`, `malloc`, `free`, `perror`, `strerror`, `access`, `dup`, `dup2`, `execve`, `exit`, `fork`, `pipe`, `unlink`, `wait`, `waitpid`;
-`ft_printf` (and any equivalent YOU coded)
+`ft_printf` (and any equivalent YOU coded).
 
 ### Explanation of Symbols
 

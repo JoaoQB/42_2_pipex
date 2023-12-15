@@ -1,4 +1,3 @@
-```markdown
 # 42_2_pipex
 
 This C project explores the UNIX pipe operator, aiming to replicate its functionality in a C program. The goal is to mimic the behavior of the shell pipe command ("< file1 cmd1 | cmd2 > file2").
@@ -25,7 +24,9 @@ Behaves like:
 < infile grep a1 | wc -w > outfile
 ```
 
-### Allowed Functions: `open`, `close`, `read`, `write`, `malloc`, `free`, `perror`, `strerror`, `access`, `dup`, `dup2`, `execve`, `exit`, `fork`, `pipe`, `unlink`, `wait`, `waitpid`, `ft_printf` (and any equivalent YOU coded)
+### Allowed Functions:
+`open`, `close`, `read`, `write`, `malloc`, `free`, `perror`, `strerror`, `access`, `dup`, `dup2`, `execve`, `exit`, `fork`, `pipe`, `unlink`, `wait`, `waitpid`;
+`ft_printf` (and any equivalent YOU coded)
 
 ### Explanation of Symbols
 

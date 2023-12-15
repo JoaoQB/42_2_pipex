@@ -48,10 +48,11 @@ Hi
 Stop
 ```
 
-Certainly, let's format the provided information in a cleaner and more visually appealing way:
 
-```markdown
+
 # Functions Used
+
+Quick look at the new functions:
 
 ## perror()
 
@@ -60,105 +61,6 @@ void perror(const char *s);
 ```
 
 The `perror()` function produces a message on standard error describing the last error encountered during a call to a system or library function.
-
-- If `s` is not NULL and `*s` is not a null byte (`'\0'`), the argument string `s` is printed, followed by a colon and a blank.
-- Then an error message corresponding to the current value of `errno` and a new-line.
-
-...
-
-## strerror()
-
-```c
-char *strerror(int errnum);
-```
-
-The `strerror()` function returns a pointer to a string that describes the error code passed in the argument `errnum`, possibly using the LC_MESSAGES part of the current locale to select the appropriate language.
-
-...
-
-## access()
-
-```c
-int access(const char *pathname, int mode);
-```
-
-The `access()` function checks whether the calling process can access the file pathname. If pathname is a symbolic link, it is dereferenced.
-
-...
-
-## dup2()
-
-```c
-int dup2(int oldfd, int newfd);
-```
-
-The `dup2()` system call creates a copy of the file descriptor `oldfd`, using the file descriptor number specified in `newfd`.
-
-...
-
-## execve()
-
-```c
-int execve(const char *pathname, char *const argv[], char *const envp[]);
-```
-
-The `execve()` function executes the program referred to by `pathname` (or filename). This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and data segments.
-
-...
-
-## fork()
-
-```c
-pid_t fork(void);
-```
-
-The `fork()` function creates a new process by duplicating the calling process. The new process is referred to as the child process, and the calling process is referred to as the parent process.
-
-...
-
-## pipe()
-
-```c
-int pipe(int pipefd[2]);
-```
-
-The `pipe()` function creates a unidirectional data channel that can be used for interprocess communication.
-
-...
-
-## unlink()
-
-```c
-int unlink(const char *pathname);
-```
-
-The `unlink()` function deletes a name from the filesystem. If that name was the last link to a file and no processes have the file open, the file is deleted and the space it was using is made available for reuse.
-
-...
-
-## wait() and waitpid()
-
-```c
-pid_t wait(int *wstatus);
-pid_t waitpid(pid_t pid, int *wstatus, int options);
-```
-
-All of these system calls are used to wait for state changes in a child of the calling process and obtain information about the child whose state has changed.
-
-...
-```
-
-Feel free to adjust the formatting or let me know if you have any specific preferences!
-FUNCTIONS USED:
-
-A lot of new functions I've never used. Quick look at them:
-
-
-perror()
-
-void perror(const char *s);
-
-The perror() function produces a message on standard error describing the last error encountered during a call to a system or library function.
 
 First  (if s is not NULL and *s is not a null byte ('\0')), the argument string s is printed, followed by a colon and a blank.
 Then an error message corresponding to the current value of errno and a new-line.
@@ -180,39 +82,41 @@ In such cases, a successful return can be distinguished from an error return by 
 
 errno is defined by the ISO C standard to be a modifiable lvalue of type int, and must not be explicitly declared; errno may be a macro.  errno is thread-local; setting it in one thread does not affect its value in any other thread.
 
+## strerror()
 
-sterror()
-
+```c
 char *strerror(int errnum);
+```
 
-The  strerror()  function  returns a pointer to a string that describes the error code passed in the argument errnum, possibly using the LC_MESSAGES part of the current locale to select the appropriate language.
-(For example, if errnum is EINVAL, the returned description will be "Invalid argument".)  This string must not be modified by  the  application, but may be modified by a subsequent call to strerror() or strerror_l().  No other library function, including perror(3), will modify this string.
+The `strerror()` function returns a pointer to a string that describes the error code passed in the argument `errnum`, possibly using the LC_MESSAGES part of the current locale to select the appropriate language.
 
- The  strerror(),  strerror_l(), and the GNU-specific strerror_r() functions return the appropriate error description string, or an "Unknown error nnn" message if the error number is unknown.
+(For example, if errnum is EINVAL, the returned description will be "Invalid argument".)  This string must not be modified by  the  application, but may be modified by a subsequent call to `strerror()`.  No other library function, including `perror(3)`, will modify this string.
 
+## access()
 
-access()
-
+```c
 int access(const char *pathname, int mode);
+```
 
-access()  checks  whether the calling process can access the file path‐name.
-If pathname is a symbolic link, it is dereferenced.
+The `access()` function checks whether the calling process can access the file pathname. If pathname is a symbolic link, it is dereferenced.
 
 The mode specifies the accessibility check(s) to be performed,  and  is
-either the value F_OK, or a mask consisting of the bitwise OR of one or more of R_OK, W_OK, and X_OK.
-F_OK tests  for  the  existence  of  the file.
-R_OK,  W_OK,  and  X_OK test whether the file exists and grants read, write, and execute permissions, respectively.
+either the value `F_OK`, or a mask consisting of the bitwise OR of one or more of `R_OK`, `W_OK`, and `X_OK`.
+`F_OK` tests  for  the  existence  of  the file.
+`R_OK`, `W_OK`,  and `X_OK` test whether the file exists and grants read, write, and execute permissions, respectively.
 
 On  success (all requested permissions granted, or mode is F_OK and the file exists), zero is returned.
 On error (at least  one  bit  in  mode asked  for  a  permission  that is denied, or mode is F_OK and the file
 does not exist, or some other error occurred), -1 is returned, and  errno is set appropriately.
 
+## dup2()
 
-dup2()
-
+```c
 int dup2(int oldfd, int newfd);
+```
 
-The dup() system call creates a copy of the file descriptor oldfd, using the the file descriptor number  specified  in  newfd.
+The `dup2()` system call creates a copy of the file descriptor `oldfd`, using the file descriptor number specified in `newfd`.
+
 After  a  successful  return, the old and new file descriptors may be used interchangeably.  They refer to the same open file description (see open(2)) and thus share file offset and file status flags; for example, if the file offset is modified by using lseek(2) on one of the file descriptors, the offset is also changed for the other.
 
 However, note the following points:
@@ -222,55 +126,59 @@ However, note the following points:
 
 On success, these system calls return the new file descriptor.  On error, -1 is returned, and errno is set appropriately.
 
+## execve()
 
-execve()
-
+```c
 int execve(const char *pathname, char *const argv[], char *const envp[]);
+```
 
-execve()  executes  the program referred to by pathname (or filename).  This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and (initialized and uninitialized) data segments.
+The `execve()` function executes the program referred to by `pathname` (or filename). This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and data segments.
 
 execve()  does  not return on success, and the text, initialized data, uninitialized data (bss), and stack of the calling process are overwritten according to the contents of the newly loaded program.
 
+## fork()
 
-fork()
-
+```c
 pid_t fork(void);
+```
 
- fork() creates a new process by duplicating the calling process.  The new process is referred to as the child process.  The calling process is referred to as the parent process.
+The `fork()` function creates a new process by duplicating the calling process. The new process is referred to as the child process, and the calling process is referred to as the parent process.
 
 The  child process and the parent process run in separate memory spaces.  At the time of fork() both memory spaces have the same content.
 Memory writes, file mappings (mmap(2)), and unmappings (munmap(2)) performed by one of the processes do not affect the other.
 
 The child process is an exact duplicate of the parent process except for the following points: see "man fork".
 
+## pipe()
 
-pipe()
-
+```c
 int pipe(int pipefd[2]);
+```
 
-pipe()  creates  a  pipe, a unidirectional data channel that can be used for interprocess communication.  The array pipefd is used to return two file descriptors referring to the ends of the pipe.  pipefd[0] refers to the read end of the pipe.
+The `pipe()` function creates a unidirectional data channel that can be used for interprocess communication. The array pipefd is used to return two file descriptors referring to the ends of the pipe.  pipefd[0] refers to the read end of the pipe.
 pipefd[1] refers to the write end of the pipe.  Data written to the write end of the pipe  is  buffered  by  the kernel until it is read from the read end of the pipe.
 
 On success, zero is returned.  On error, -1 is returned, errno is set appropriately, and pipefd is left unchanged.
 
 
-unlink()
+## unlink()
 
+```c
 int unlink(const char *pathname);
+```
 
-unlink() deletes a name from the filesystem.
-If that name was the last link to a file and no processes have the file open, the  file is deleted and the space it was using is made available for reuse.
+The `unlink()` function deletes a name from the filesystem. If that name was the last link to a file and no processes have the file open, the file is deleted and the space it was using is made available for reuse.
 
 If the name was the last link to a file but any processes still have the file open, the file will remain in existence until the last file descriptor referring to it is closed.
 
+## wait() and waitpid()
 
-wait() and waitpid()
-
+```c
 pid_t wait(int *wstatus);
-
 pid_t waitpid(pid_t pid, int *wstatus, int options);
+```
 
-All of these system calls are used to wait for state changes in a child of the calling process, and obtain information about the child whose state has changed.
+All of these system calls are used to wait for state changes in a child of the calling process and obtain information about the child whose state has changed.
 A state change is considered to be: the child terminated; the child was stopped by a signal; or the child was resumed by a signal.
 In the case of a terminated child, performing a wait allows  the system to release the resources associated with the child;
 if a wait is not performed, then the terminated child remains in a "zombie" state (see NOTES below).

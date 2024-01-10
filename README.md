@@ -55,7 +55,7 @@ Stop
 Quick look at the new functions:
 
 <details>
-  <summary><strong>## perror()</strong></summary>
+  <summary><h2>perror()</h2></summary>
 
 ```c
 void perror(const char *s);

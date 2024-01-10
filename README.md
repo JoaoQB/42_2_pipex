@@ -57,7 +57,7 @@ Stop
 Quick look at the new functions:
 
 <details>
-  <summary><h2>perror()</h2></summary>
+  <summary><strong>perror()</strong></summary>
 
 ```c
 void perror(const char *s);
@@ -86,7 +86,7 @@ In such cases, a successful return can be distinguished from an error return by 
 errno is defined by the ISO C standard to be a modifiable lvalue of type int, and must not be explicitly declared; errno may be a macro.  errno is thread-local; setting it in one thread does not affect its value in any other thread.
 </details>
 <details>
-  <summary><h2>strerror()</h2></summary>
+  <summary><strong>strerror()</strong></summary>
 
 ```c
 char *strerror(int errnum);
@@ -97,7 +97,7 @@ The `strerror()` function returns a pointer to a string that describes the error
 (For example, if errnum is EINVAL, the returned description will be "Invalid argument".)  This string must not be modified by  the  application, but may be modified by a subsequent call to `strerror()`.  No other library function, including `perror(3)`, will modify this string.
 </details>
 <details>
-  <summary><h2>access()</h2></summary>
+  <summary><strong>access()</strong></summary>
 
 ```c
 int access(const char *pathname, int mode);
@@ -115,7 +115,7 @@ On error (at least  one  bit  in  mode asked  for  a  permission  that is denied
 does not exist, or some other error occurred), -1 is returned, and  errno is set appropriately.
 </details>
 <details>
-<summary><h2>dup2()</h2></summary>
+<summary><strong>dup2()</strong></summary>
 
 ```c
 int dup2(int oldfd, int newfd);
@@ -133,7 +133,7 @@ However, note the following points:
 On success, these system calls return the new file descriptor.  On error, -1 is returned, and errno is set appropriately.
 </details>
 <details>
-  <summary><h2>execve()</h2></summary>
+  <summary><strong>execve()</strong></summary>
 
 ```c
 int execve(const char *pathname, char *const argv[], char *const envp[]);
@@ -144,7 +144,7 @@ The `execve()` function executes the program referred to by `pathname` (or filen
 execve()  does  not return on success, and the text, initialized data, uninitialized data (bss), and stack of the calling process are overwritten according to the contents of the newly loaded program.
 </details>
 <details>
-  <summary><h2>fork()</h2></summary>
+  <summary><strong>fork()</strong></summary>
 
 ```c
 pid_t fork(void);
@@ -158,7 +158,7 @@ Memory writes, file mappings (mmap(2)), and unmappings (munmap(2)) performed by 
 The child process is an exact duplicate of the parent process except for the following points: see "man fork".
 </details>
 <details>
-  <summary><h2>pipe()</h2></summary>
+  <summary><strong>pipe()</strong></summary>
 
 ```c
 int pipe(int pipefd[2]);
@@ -170,7 +170,7 @@ pipefd[1] refers to the write end of the pipe.  Data written to the write end of
 On success, zero is returned.  On error, -1 is returned, errno is set appropriately, and pipefd is left unchanged.
 </details>
 <details>
-  <summary><h2>unlink()</h2></summary>
+  <summary><strong>unlink()</strong></summary>
 
 ```c
 int unlink(const char *pathname);
@@ -181,7 +181,7 @@ The `unlink()` function deletes a name from the filesystem. If that name was the
 If the name was the last link to a file but any processes still have the file open, the file will remain in existence until the last file descriptor referring to it is closed.
 </details>
 <details>
-  <summary><h2>wait() and waitpid()</h2></summary>
+  <summary><strong>wait() and waitpid()</strong></summary>
 
 ```c
 pid_t wait(int *wstatus);
@@ -199,31 +199,6 @@ The  waitpid()  system  call  suspends execution of the calling thread until a c
 </details>
 
 
-# Opening files:
-
-First thing to do is to open the files of input and output. Let's use shell to see how it handles errors.
-
-If the input file doesn't exist, it gives an error message like:
-"zsh: no such file or directory: file3.txt".
-"bash: file3.txt: No such file or directory".
-"sh: 1: cannot open file3.txt: No such file". (The 1 is n, and n stands for how many times an error message was printed in that shell window i guess)
-
-If it exists but it doesn't have the right permissions, it says:
-"zsh: permission denied: file2.txt".
-"bash: file2.txt: Permission denied".
-"sh: 1: cannot create file2.txt: Permission denied".
-
-If the output file doesn't exist, it creates it (with chmod 664). If it already exists, it overwrites it's content.
-However, if it exists but doesn't have the necessary permissions set, it gives an error message like:
-"zsh: permission denied: file2.txt".
-"bash: file2.txt: Permission denied".
-"sh: 1: cannot create file2.txt: Permission denied".
-
-We can also see that if the input file doesn't exist, but the output one does and has the right permissions, then it prints the error message to stderr, and still tries to execute the command to the output file. For example:
-"< file5.txt cat | wc -lc
-zsh: no such file or directory: file5.txt
-      0       0"
-
 # Opening Files
 
 To begin, the first step is to open the input and output files. Let's observe how the shell handles errors.
@@ -239,6 +214,6 @@ To begin, the first step is to open the input and output files. Let's observe ho
   - "zsh: permission denied: file2.txt."
 
 - Notably, if the input file doesn't exist, but the output file exists and has the correct permissions, the error message is printed to stderr. However, the shell still attempts to execute the command on the output file. For instance:
-  "< file5.txt cat | wc -lc
+  - "< file5.txt cat | wc -lc
   zsh: no such file or directory: file5.txt
         0       0"

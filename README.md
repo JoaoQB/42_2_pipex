@@ -15,7 +15,7 @@ Behaves like:
 < infile ls -l | wc -l > outfile
 ```
 
-
+Or:
 
 ```bash
 ./pipex infile "grep a1" "wc -w" outfile
@@ -84,7 +84,6 @@ For some system calls and library functions (e.g., getpriority(2)), -1 is a vali
 In such cases, a successful return can be distinguished from an error return by setting errno to zero before the call, and then, if the call returns a status that indicates that an error may have occurred, checking to see if errno has a nonzero value.
 
 errno is defined by the ISO C standard to be a modifiable lvalue of type int, and must not be explicitly declared; errno may be a macro.  errno is thread-local; setting it in one thread does not affect its value in any other thread.
-
 </details>
 <details>
   <summary><h2>strerror()</h2></summary>
@@ -96,7 +95,6 @@ char *strerror(int errnum);
 The `strerror()` function returns a pointer to a string that describes the error code passed in the argument `errnum`, possibly using the LC_MESSAGES part of the current locale to select the appropriate language.
 
 (For example, if errnum is EINVAL, the returned description will be "Invalid argument".)  This string must not be modified by  the  application, but may be modified by a subsequent call to `strerror()`.  No other library function, including `perror(3)`, will modify this string.
-
 </details>
 <details>
   <summary><h2>access()</h2></summary>
@@ -115,7 +113,6 @@ either the value `F_OK`, or a mask consisting of the bitwise OR of one or more o
 On  success (all requested permissions granted, or mode is F_OK and the file exists), zero is returned.
 On error (at least  one  bit  in  mode asked  for  a  permission  that is denied, or mode is F_OK and the file
 does not exist, or some other error occurred), -1 is returned, and  errno is set appropriately.
-
 </details>
 <details>
 <summary><h2>dup2()</h2></summary>
@@ -134,7 +131,6 @@ However, note the following points:
 *  If oldfd is a valid file descriptor, and newfd has the same value as oldfd, then dup2() does nothing, and returns newfd.
 
 On success, these system calls return the new file descriptor.  On error, -1 is returned, and errno is set appropriately.
-
 </details>
 <details>
   <summary><h2>execve()</h2></summary>
@@ -146,7 +142,6 @@ int execve(const char *pathname, char *const argv[], char *const envp[]);
 The `execve()` function executes the program referred to by `pathname` (or filename). This causes the program that is currently being run by the calling process to be replaced with a new program, with newly initialized stack, heap, and data segments.
 
 execve()  does  not return on success, and the text, initialized data, uninitialized data (bss), and stack of the calling process are overwritten according to the contents of the newly loaded program.
-
 </details>
 <details>
   <summary><h2>fork()</h2></summary>
@@ -161,7 +156,6 @@ The  child process and the parent process run in separate memory spaces.  At the
 Memory writes, file mappings (mmap(2)), and unmappings (munmap(2)) performed by one of the processes do not affect the other.
 
 The child process is an exact duplicate of the parent process except for the following points: see "man fork".
-
 </details>
 <details>
   <summary><h2>pipe()</h2></summary>
@@ -174,7 +168,6 @@ The `pipe()` function creates a unidirectional data channel that can be used for
 pipefd[1] refers to the write end of the pipe.  Data written to the write end of the pipe  is  buffered  by  the kernel until it is read from the read end of the pipe.
 
 On success, zero is returned.  On error, -1 is returned, errno is set appropriately, and pipefd is left unchanged.
-
 </details>
 <details>
   <summary><h2>unlink()</h2></summary>
@@ -186,7 +179,6 @@ int unlink(const char *pathname);
 The `unlink()` function deletes a name from the filesystem. If that name was the last link to a file and no processes have the file open, the file is deleted and the space it was using is made available for reuse.
 
 If the name was the last link to a file but any processes still have the file open, the file will remain in existence until the last file descriptor referring to it is closed.
-
 </details>
 <details>
   <summary><h2>wait() and waitpid()</h2></summary>
@@ -204,9 +196,10 @@ if a wait is not performed, then the terminated child remains in a "zombie" stat
 The wait() system call suspends execution of the calling thread until one of its children terminates.
 
 The  waitpid()  system  call  suspends execution of the calling thread until a child specified by pid argument has changed state.  By default, waitpid() waits only for terminated children.
+</details>
 
 
-Opening files:
+# Opening files:
 
 First thing to do is to open the files of input and output. Let's use shell to see how it handles errors.
 
@@ -231,4 +224,21 @@ We can also see that if the input file doesn't exist, but the output one does an
 zsh: no such file or directory: file5.txt
       0       0"
 
-</details>
+# Opening Files
+
+To begin, the first step is to open the input and output files. Let's observe how the shell handles errors.
+
+- If the input file doesn't exist, it generates an error message such as:
+  - "zsh: no such file or directory: file3.txt."
+
+- If the input file exists but lacks the necessary permissions, the error message is:
+  - "zsh: permission denied: file2.txt."
+
+- In the case where the output file doesn't exist, it creates the file (with `chmod 664`). If the file already exists, it overwrites its content.
+  However, if the output file exists but lacks the necessary permissions, the error message is similar to the one for the input file:
+  - "zsh: permission denied: file2.txt."
+
+- Notably, if the input file doesn't exist, but the output file exists and has the correct permissions, the error message is printed to stderr. However, the shell still attempts to execute the command on the output file. For instance:
+  "< file5.txt cat | wc -lc
+  zsh: no such file or directory: file5.txt
+        0       0"

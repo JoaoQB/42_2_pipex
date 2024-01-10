@@ -54,7 +54,8 @@ Stop
 
 Quick look at the new functions:
 
-## perror()
+<details>
+  <summary><strong>perror()</strong></summary>
 
 ```c
 void perror(const char *s);
@@ -81,6 +82,7 @@ For some system calls and library functions (e.g., getpriority(2)), -1 is a vali
 In such cases, a successful return can be distinguished from an error return by setting errno to zero before the call, and then, if the call returns a status that indicates that an error may have occurred, checking to see if errno has a nonzero value.
 
 errno is defined by the ISO C standard to be a modifiable lvalue of type int, and must not be explicitly declared; errno may be a macro.  errno is thread-local; setting it in one thread does not affect its value in any other thread.
+</details>
 
 ## strerror()
 
@@ -186,3 +188,29 @@ if a wait is not performed, then the terminated child remains in a "zombie" stat
 The wait() system call suspends execution of the calling thread until one of its children terminates.
 
 The  waitpid()  system  call  suspends execution of the calling thread until a child specified by pid argument has changed state.  By default, waitpid() waits only for terminated children.
+
+
+Opening files:
+
+First thing to do is to open the files of input and output. Let's use shell to see how it handles errors.
+
+If the input file doesn't exist, it gives an error message like:
+"zsh: no such file or directory: file3.txt".
+"bash: file3.txt: No such file or directory".
+"sh: 1: cannot open file3.txt: No such file". (The 1 is n, and n stands for how many times an error message was printed in that shell window i guess)
+
+If it exists but it doesn't have the right permissions, it says:
+"zsh: permission denied: file2.txt".
+"bash: file2.txt: Permission denied".
+"sh: 1: cannot create file2.txt: Permission denied".
+
+If the output file doesn't exist, it creates it (with chmod 664). If it already exists, it overwrites it's content.
+However, if it exists but doesn't have the necessary permissions set, it gives an error message like:
+"zsh: permission denied: file2.txt".
+"bash: file2.txt: Permission denied".
+"sh: 1: cannot create file2.txt: Permission denied".
+
+We can also see that if the input file doesn't exist, but the output one does and has the right permissions, then it prints the error message to stderr, and still tries to execute the command to the output file. For example:
+"< file5.txt cat | wc -lc
+zsh: no such file or directory: file5.txt
+      0       0"

@@ -16,6 +16,7 @@ Behaves like:
 ```
 
 
+
 ```bash
 ./pipex infile "grep a1" "wc -w" outfile
 ```
@@ -52,6 +53,7 @@ Stop
 
 # Functions Used
 
+
 Quick look at the new functions:
 
 <details>
@@ -82,9 +84,10 @@ For some system calls and library functions (e.g., getpriority(2)), -1 is a vali
 In such cases, a successful return can be distinguished from an error return by setting errno to zero before the call, and then, if the call returns a status that indicates that an error may have occurred, checking to see if errno has a nonzero value.
 
 errno is defined by the ISO C standard to be a modifiable lvalue of type int, and must not be explicitly declared; errno may be a macro.  errno is thread-local; setting it in one thread does not affect its value in any other thread.
-</details>
 
-## strerror()
+</details>
+<details>
+  <summary><h2>strerror()</h2></summary>
 
 ```c
 char *strerror(int errnum);
@@ -94,7 +97,9 @@ The `strerror()` function returns a pointer to a string that describes the error
 
 (For example, if errnum is EINVAL, the returned description will be "Invalid argument".)  This string must not be modified by  the  application, but may be modified by a subsequent call to `strerror()`.  No other library function, including `perror(3)`, will modify this string.
 
-## access()
+</details>
+<details>
+  <summary><h2>access()</h2></summary>
 
 ```c
 int access(const char *pathname, int mode);
@@ -111,7 +116,9 @@ On  success (all requested permissions granted, or mode is F_OK and the file exi
 On error (at least  one  bit  in  mode asked  for  a  permission  that is denied, or mode is F_OK and the file
 does not exist, or some other error occurred), -1 is returned, and  errno is set appropriately.
 
-## dup2()
+</details>
+<details>
+<summary><h2>dup2()</h2></summary>
 
 ```c
 int dup2(int oldfd, int newfd);
@@ -128,7 +135,9 @@ However, note the following points:
 
 On success, these system calls return the new file descriptor.  On error, -1 is returned, and errno is set appropriately.
 
-## execve()
+</details>
+<details>
+  <summary><h2>execve()</h2></summary>
 
 ```c
 int execve(const char *pathname, char *const argv[], char *const envp[]);
@@ -138,7 +147,9 @@ The `execve()` function executes the program referred to by `pathname` (or filen
 
 execve()  does  not return on success, and the text, initialized data, uninitialized data (bss), and stack of the calling process are overwritten according to the contents of the newly loaded program.
 
-## fork()
+</details>
+<details>
+  <summary><h2>fork()</h2></summary>
 
 ```c
 pid_t fork(void);
@@ -151,7 +162,9 @@ Memory writes, file mappings (mmap(2)), and unmappings (munmap(2)) performed by 
 
 The child process is an exact duplicate of the parent process except for the following points: see "man fork".
 
-## pipe()
+</details>
+<details>
+  <summary><h2>pipe()</h2></summary>
 
 ```c
 int pipe(int pipefd[2]);
@@ -162,8 +175,9 @@ pipefd[1] refers to the write end of the pipe.  Data written to the write end of
 
 On success, zero is returned.  On error, -1 is returned, errno is set appropriately, and pipefd is left unchanged.
 
-
-## unlink()
+</details>
+<details>
+  <summary><h2>unlink()</h2></summary>
 
 ```c
 int unlink(const char *pathname);
@@ -173,7 +187,9 @@ The `unlink()` function deletes a name from the filesystem. If that name was the
 
 If the name was the last link to a file but any processes still have the file open, the file will remain in existence until the last file descriptor referring to it is closed.
 
-## wait() and waitpid()
+</details>
+<details>
+  <summary><h2>wait() and waitpid()</h2></summary>
 
 ```c
 pid_t wait(int *wstatus);
@@ -214,3 +230,5 @@ We can also see that if the input file doesn't exist, but the output one does an
 "< file5.txt cat | wc -lc
 zsh: no such file or directory: file5.txt
       0       0"
+
+</details>

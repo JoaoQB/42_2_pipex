@@ -6,13 +6,14 @@
 #    By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 11:20:21 by jqueijo-          #+#    #+#              #
-#    Updated: 2024/01/09 12:55:57 by jqueijo-         ###   ########.fr        #
+#    Updated: 2024/01/11 11:34:00 by jqueijo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
 SRC = pipex.c \
+		pipex_utils.c
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra

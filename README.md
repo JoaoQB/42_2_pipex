@@ -201,7 +201,10 @@ The  waitpid()  system  call  suspends execution of the calling thread until a c
 
 # Opening Files
 
-To begin, the first step is to open the input and output files. Let's observe how the shell handles errors.
+To begin, the first step is to open the input and output files. For that we'll use the open() function.
+We need to open the input file if it exists. We only need to read from it so we use the "O_RDONLY" flag.
+For the output file we need to create it "O_CREAT", or if it exists, overwrite it's content "O_WRONLY | O_TRUNC".
+Let's observe how shell handles errors.
 
 - If the input file doesn't exist, it generates an error message such as:
   - "zsh: no such file or directory: file3.txt."
@@ -217,3 +220,17 @@ To begin, the first step is to open the input and output files. Let's observe ho
   - "< file5.txt cat | wc -lc
   zsh: no such file or directory: file5.txt
         0       0"
+
+We'll use the perror function with an empty string "perror("")" to display the standard error message for the errors above.
+
+After opening the files, we open a pipe. The pipe takes an array of two ints and links them together so that what one end listens to the other.
+One end reads [0], the other one writes [1]. Also the pipe assigns a fd to each of the ends.
+
+Also, we need to make the input file, our stdin, and the output file, our stdout.
+So that the program we will execute, reads from the input file and not from the stdin (the keyboard), and writes to our output file and not the stdout (terminal).
+To do that we use dup2, to redirect the stdin and save it in another file descriptor. (same for stdout)
+So instead of:
+"FD[0] - stdin, FD[1] - stdout, FD[2] - stderr"
+We get:
+"FD[0] - filein, FD[1] - fileout, FD[2] - stderr, FD[3] - stdin, FD[4] - stdout"
+So, dup2(*input_file, STDIN_FILENO); which means dup2(oldfd we want to duplicate, fd number we want to replace);

@@ -5,3 +5,5 @@
 .DS_Store
 .vscode/
 pipex
+*.txt
+onepagefile.c

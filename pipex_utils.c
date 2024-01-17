@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/11 10:49:47 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/17 11:33:36 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,10 @@
 void	ft_error(char *string)
 {
 	perror(string);
-	exit(EXIT_FAILURE);
+	// exit(EXIT_FAILURE);
 }
+
+// void	execute(char **argv, char **envp)
+// {
+
+// }

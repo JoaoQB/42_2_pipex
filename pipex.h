@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:20:13 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/11 18:17:16 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:17:22 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 
 void	open_files(int argc, char **argv, int *fd_in, int *fd_out);
 void	ft_error(char *string);
-void	pipex(int *fd_in, int *fd_out, char **argv, char **envp);
+void	pipex(char **argv, char **envp);
+int		ft_strcmp(const char *str, const char *str2);
+void	parent_process(int *pipe_end, char **argv, char **envp);
+void	child_process(int *pipe_end, char **argv, char **envp);
+// void	execute(char **argv, char **envp);
 
 #endif

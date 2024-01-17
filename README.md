@@ -202,18 +202,22 @@ The  waitpid()  system  call  suspends execution of the calling thread until a c
 
 As stated above, using Execve() will replace the program being executed - the shell program in the case of the terminal, or our c written program in the case of ours - by the new program, the command being executed. That means that if we had something like:
 
+```c
 void	main(void)
 {
 	printf(something)
 	execve(ls)
 	printf(something else)
 }
+```
 
 We would get:
 
+```c
 something
 list of files given by ls
 (second printf will not print.)
+```
 
 That means shell, or our program, needs to regain control of the program originally being executed. And that's why it uses fork.
 By using fork, the parent process - shell/our program - is still active, and waits for it's child to use execve and therefore be replaced by the new command.
@@ -229,10 +233,20 @@ We need to make the input file, our stdin, and the output file, our stdout.
 So that the program we will execute, reads from the input file and not from the stdin (the keyboard), and writes to our output file and not the stdout (terminal).
 To do that we use dup2, to redirect the stdin and save it in another file descriptor. (same for stdout)
 So instead of:
-"FD[0] - stdin, FD[1] - stdout, FD[2] - stderr"
+```c
+FD[0] - stdin
+FD[1] - stdout
+FD[2] - stderr
+```
 We get:
-"FD[0] - filein, FD[1] - fileout, FD[2] - stderr, FD[3] - stdin, FD[4] - stdout"
-So, dup2(*input_file, STDIN_FILENO); which means dup2(oldfd we want to duplicate, fd number we want to replace);
+```c
+FD[0] - filein
+FD[1] - fileout
+FD[2] - stderr
+FD[3] - stdin
+FD[4] - stdout
+```
+So, `dup2(*input_file, STDIN_FILENO);` which means `dup2(oldfd we want to duplicate, fd number we want to replace);`
 
 Let's observe how shell handles errors.
 
@@ -257,22 +271,26 @@ We'll use the perror function with an empty string "perror("")" to display the s
 
 Now we have the files opened, and replaced the stdinput and stdoutput, we can start actually using pipe() and fork().
 
+```c
 int	pipe_end[2];
 pipe(pipe_end);
+```
 
 The pipe takes an array of two ints and links them together so that what one end listens to the other.
 One end reads pipe_end[0], the other one writes pipe_end[1]. Also the pipe assigns a fd to each of the ends.
 
+```c
 pid_t	process_id;
 process_id = fork();
+```
 
 Fork() makes a clone - child process - of the original process - parent process -, and each will be run simultaneously.
-We can differentiate the processes by it's process id. The child process has "process_id == 0", while the parent will have some random positive number like "process_id == 1427387".
+We can differentiate the processes by it's process id. The child process has `"process_id == 0"`, while the parent will have some random positive number like `"process_id == 1427387"`.
 
 So we can then use this information to instruct what each process will do.
 In this case we want the child process to execute a command and write it's output to the write end of the pipe, and the parent process to read from the read end of the pipe, whatever the child has sent.
 It will then continue to create childs while there are commands to run, and always supervize and read whatever output they send, until the final command is reached.
-Then main will regain control and execute the last command which output will be sent to output_file through dup2(output_file, STDOUT_FILENO).
+Then main will regain control and execute the last command which output will be sent to output_file through `dup2(output_file, STDOUT_FILENO)`.
 
 Because the program will continue to run while one or both ends of the pipe are open, we also need to make sure we properly close everything.
 Because we're using both fork() and pipe(), our pipe actually has 4 ends. Two reading ends and two writing ends. So first thing is to close the reading end inside the child process and the writing end in the parent process as they will not be used. Something like:
@@ -299,9 +317,9 @@ executes `pathname` with arguments `ARGV` and the environment `ENVP`.
 So what is then **envp?
 
 Envp stands for environment pointer, and is an array of strings that saves the `environment variables` information in our system, sometimes called shell variables.
-It is a set of variables that our system has access to and contains information about the home directory, terminal type and more importantly in our case, the $PATH to the commands it can execute.
-To find this $PATH we can type "env | grep PATH" in our terminal.
+It is a set of variables that our system has access to and contains information about the home directory, terminal type and more importantly in our case, the `$PATH` to the commands it can execute.
+To find this `$PATH` we can type `"env | grep PATH"` in our terminal.
 It will give us all the directory paths to the command binaries, which are separated by `:` as a delimiter. Like:
-"/snap/bin:/path/to/python/executable/"
-To see the $PATH to a specific command we can run for example "which wc", with output "/usr/bin/wc".
+`"/snap/bin:/path/to/python/executable/"`
+To see the $PATH to a specific command we can run for example `"which wc"`, with output `"/usr/bin/wc"`.
 

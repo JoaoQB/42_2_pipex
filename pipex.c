@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/17 14:17:51 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:30:21 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 	}
 }
 
-void	child_process(int *pipe_end, char **argv, char **envp)
+void	child_process(int *pipe_end, char *argv, char **envp)
 {
 	close(pipe_end[0]);
 	printf("wrote successfully\n");
 	dup2(pipe_end[1], STDOUT_FILENO);
 	close(pipe_end[1]);
 	write(1, "wrote successfully\n", 19);
-	// execute(argv, envp);
+	execute(argv, envp);
 }
 
-void	parent_process(int *pipe_end, char **argv, char **envp)
+void	parent_process(int *pipe_end, char *argv, char **envp)
 {
 	wait(NULL);
 	close(pipe_end[1]);
@@ -58,7 +58,7 @@ void	parent_process(int *pipe_end, char **argv, char **envp)
 	write(1, "read successfully\n", 18);
 }
 
-void	pipex(char **argv, char **envp)
+void	pipex(char *argv, char **envp)
 {
 	int		pipe_end[2];
 	pid_t	process_id;
@@ -82,11 +82,22 @@ int	main(int argc, char **argv, char **envp)
 {
 	int	input_file;
 	int	output_file;
+	int	i;
 
+	i = 2;
 	if (argc >= 5)
 	{
 		open_files(argc, argv, &input_file, &output_file);
-		pipex(argv, envp);
-		// execute(argv, envp);
+		while (i < (argc - 2))
+		{
+			if (ft_strcmp(argv[1], "here_doc") != 0)
+				pipex(argv[i++], envp);
+			else
+			{
+				i = 3;
+				pipex(argv[i++], envp);
+			}
+		}
+		execute(argv[argc - 2], envp);
 	}
 }

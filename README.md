@@ -310,11 +310,11 @@ We can then continue to instruct each process to redirect the needed ends to std
 
 # Execve() and the new char **envp
 
-So we saw above that execve(const char *pathname, char *const argv[], char *const envp[]);
+So we saw above that `execve(const char *pathname, char *const argv[], char *const envp[]);`
 replaces the current process,
 executes `pathname` with arguments `ARGV` and the environment `ENVP`.
 
-So what is then **envp?
+So what is then `**envp`?
 
 Envp stands for environment pointer, and is an array of strings that saves the `environment variables` information in our system, sometimes called shell variables.
 It is a set of variables that our system has access to and contains information about the home directory, terminal type and more importantly in our case, the `$PATH` to the commands it can execute.
@@ -322,4 +322,9 @@ To find this `$PATH` we can type `"env | grep PATH"` in our terminal.
 It will give us all the directory paths to the command binaries, which are separated by `:` as a delimiter. Like:
 `"/snap/bin:/path/to/python/executable/"`
 To see the $PATH to a specific command we can run for example `"which wc"`, with output `"/usr/bin/wc"`.
+
+Let's create a function that executes the commands given in `argv[]`. To do that we need to make several steps before being able to use the `execve()` function.
+First we retrieve the command in argv using `ft_split`. Then we get all the possible paths in envp, also using `split` but using `:`.
+We should then check if the command retrieved exists in every possible path we got.
+If so we can then use that path to execve(), if not we must display an error message.
 

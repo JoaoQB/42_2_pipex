@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/18 18:30:21 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/23 15:13:41 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,42 +20,36 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 		*fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 		if (*fd_in == -1 || *fd_out == -1)
 			ft_error("Error in open_files\n");
-		else
-			printf("Opened files successfully\n");
 		dup2(*fd_in, STDIN_FILENO);
-		dup2(*fd_out, STDOUT_FILENO);
 		close(*fd_in);
-		close(*fd_out);
 	}
 	else
 	{
 		*fd_out = open(argv[argc - 1], O_CREAT, O_WRONLY, O_TRUNC, 0644);
 		if (*fd_out == -1)
 			ft_error("Error in open_files\n");
-		else
-			printf("Opened files successfully\n");
-		dup2(*fd_out, STDOUT_FILENO);
-		close(*fd_out);
+		//dup2() terminal -> stdin_fileno;
 	}
 }
 
 void	child_process(int *pipe_end, char *argv, char **envp)
 {
 	close(pipe_end[0]);
-	printf("wrote successfully\n");
 	dup2(pipe_end[1], STDOUT_FILENO);
 	close(pipe_end[1]);
-	write(1, "wrote successfully\n", 19);
 	execute(argv, envp);
 }
 
 void	parent_process(int *pipe_end, char *argv, char **envp)
 {
+	char	buf[101];
+
 	wait(NULL);
 	close(pipe_end[1]);
 	dup2(pipe_end[0], STDIN_FILENO);
 	close(pipe_end[0]);
-	write(1, "read successfully\n", 18);
+	read(pipe_end[0], buf, 100);
+	printf("Parent read: %s", buf);
 }
 
 void	pipex(char *argv, char **envp)
@@ -65,13 +59,9 @@ void	pipex(char *argv, char **envp)
 
 	if (pipe(pipe_end) < 0)
 		ft_error("Pipe error\n");
-	else
-		printf("Piped Sucessfully\n");
 	process_id = fork();
 	if (process_id < 0)
 		ft_error("Fork error\n");
-	else
-		printf("Forked Successfully\n");
 	if (process_id == 0)
 		child_process(pipe_end, argv, envp);
 	else

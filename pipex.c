@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/23 15:13:41 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:30:16 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 void	child_process(int *pipe_end, char *argv, char **envp)
 {
 	close(pipe_end[0]);
-	dup2(pipe_end[1], STDOUT_FILENO);
-	close(pipe_end[1]);
+	// dup2(pipe_end[1], STDOUT_FILENO);
+	// close(pipe_end[1]);
 	execute(argv, envp);
 }
 

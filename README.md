@@ -328,3 +328,17 @@ First we retrieve the command in argv using `ft_split`. Then we get all the poss
 We should then check if the command retrieved exists in every possible path we got.
 If so we can then use that path to execve(), if not we must display an error message.
 
+pseudocode:
+
+char	path
+char	my path
+char	cmd
+
+path = split(env, ":");
+cmd = split(argv, " ");
+while (path)
+	my path = strjoin path + cmd;
+	if (my path == path)
+		execute
+	else
+		command not found

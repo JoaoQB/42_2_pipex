@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:20:13 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/24 10:28:35 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:24:24 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,8 @@ char	**ft_split(char const *s, char c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
+char	**get_paths(char **envp);
+char	*check_paths(char **possible_paths, char *command);
 
 #endif

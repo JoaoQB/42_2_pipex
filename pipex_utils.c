@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/24 10:32:54 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:46:17 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,58 @@ void	ft_free_doublearray(char **argv)
 	free(argv);
 }
 
+char	**get_paths(char **envp)
+{
+	char	**command_paths;
+	char	*paths;
+
+	while (*envp)
+	{
+		if (ft_strnstr(*envp, "PATH=", 5))
+			break ;
+		envp++;
+	}
+	paths = *envp;
+	while (*paths != '/')
+		paths++;
+	command_paths = ft_split(paths, ':');
+	return (command_paths);
+}
+
+char	*check_paths(char **possible_paths, char *command)
+{
+	char	*cmd_path;
+	int		fd;
+
+	while(*possible_paths)
+	{
+		cmd_path = ft_strjoin(*possible_paths, command);
+		fd = access(cmd_path, F_OK);
+		// printf("cmd_path is: %s\n", cmd_path);
+		if (fd == 0)
+			return(cmd_path);
+		possible_paths++;
+	}
+	return (NULL);
+}
+
 static int		i;
 
 void	execute(char *argv, char **envp)
 {
 	char	**command;
-	// char	*full_command;
-	// size_t	len;
-	// char	cmd_path;
+	char	**possible_paths;
+	char	*command_path;
 
 	command = ft_split(argv, ' ');
+	possible_paths = get_paths(envp);
 	if (!command)
 		ft_error("");
-	// len = ft_strlen(*command);
-	// ft_strlcpy(full_command, *command, len + 1);
-	// while (*++command)
-	while(*command)
-	{
-		// full_command = ft_strjoin(full_command, *command);
-		printf("Command is %s, printed for the %dth time\n", *command, i++);
-		command++;
-	}
-	// ft_free_doublearray(command);
-	// free(command);
-	// printf("Full Command is %s, printed for the %dth time\n", full_command, i++);
+	command_path = check_paths(possible_paths, *command);
+	if (!command_path)
+		printf("command not found: %s", *command);
+	execve(command_path, command, envp);
+	free(command_path);
+	ft_free_doublearray(command);
+	ft_free_doublearray(possible_paths);
 }

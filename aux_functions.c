@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 10:04:11 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/24 09:38:20 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:31:06 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,40 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2);
-	dest = (char *)malloc(sizeof(char) * (len + 1));
+	dest = (char *)malloc(sizeof(char) * (len + 2));
 	if (!dest)
 		return (NULL);
 	i = -1;
 	while (s1[++i])
 		dest[i] = s1[i];
+	dest[i++] = '/';
 	j = -1;
 	while (s2[++j])
 		dest[i++] = s2[j];
 	*(dest + i) = '\0';
 	return (dest);
 }
+
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (!*little)
+		return ((char *)big);
+	if (len == 0 && !big)
+		return (NULL);
+	while (big[i] && i < len)
+	{
+		j = 0;
+		while ((big[i + j] == little[j]) && little[j] && i + j < len)
+			j++;
+		if (!little[j])
+			return ((char *)big + i);
+		i++;
+	}
+	return (NULL);
+}
+
+

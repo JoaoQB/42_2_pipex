@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 15:59:10 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:13:14 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 			perror("");
 			exit(EXIT_FAILURE);
 		}
+		else
+				get_doc(fd_in);
 	}
 }
 
@@ -82,6 +84,13 @@ int	main(int argc, char **argv, char **envp)
 	if (argc >= 5)
 	{
 		open_files(argc, argv, &input_file, &output_file);
+		// if (ft_strcmp(argv[1], "here_doc" != 0))
+		// 	pipex(argv[i++], envp);
+		// else
+		// {
+		// 	i = 3;
+		// 	pipex(argv[i++], envp);
+		// }
 		while (i < (argc - 2))
 		{
 			if (ft_strcmp(argv[1], "here_doc") != 0)

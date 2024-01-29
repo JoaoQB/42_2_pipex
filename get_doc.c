@@ -6,13 +6,13 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 15:18:35 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 15:54:30 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:15:11 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*read_input(int fd)
+char	*read_input(int *fd)
 {
 	int		read_char;
 	char	*buffer[1];
@@ -27,6 +27,12 @@ char	*read_input(int fd)
 		read_char = read(0, buffer, 1);
 	}
 	// return(line);
+}
+
+void	get_doc(int *fd)
+{
+	read_input(fd);
+
 }
 
 

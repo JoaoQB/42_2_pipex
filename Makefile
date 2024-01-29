@@ -6,7 +6,7 @@
 #    By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/08 11:20:21 by jqueijo-          #+#    #+#              #
-#    Updated: 2024/01/23 14:42:16 by jqueijo-         ###   ########.fr        #
+#    Updated: 2024/01/29 12:46:15 by jqueijo-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = pipex.c \
 		ft_split.c \
 
 CC = cc
+CFLAGS += -Wall -Werror -Wextra
 
 OBJ = $(SRC:.c=.o)
 
@@ -31,10 +32,6 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-
-real: CFLAGS += -Wall -Werror -Wextra
-
-real: all
 
 re: fclean all
 

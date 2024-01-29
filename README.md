@@ -346,3 +346,11 @@ while (path)
 
 
 Now that the program is executing, it's time to clean!
+
+Here_doc
+
+pseudocode:
+
+Create buffer. Buffer is
+Read from terminal.
+

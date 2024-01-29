@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 13:01:50 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:59:10 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 	{
 		*fd_out = open(argv[argc - 1], O_CREAT, O_WRONLY, O_TRUNC, 0644);
 		if (*fd_out == -1)
-			perror("Error in open_files\n");
-		//dup2() terminal -> stdin_fileno;
+		{
+			perror("");
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 

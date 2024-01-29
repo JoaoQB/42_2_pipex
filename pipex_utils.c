@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 13:02:04 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 13:03:58 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ char	*check_paths(char **possible_paths, char *command)
 	char	*cmd_path;
 	int		fd;
 
-	while(*possible_paths)
+	while (*possible_paths)
 	{
 		cmd_path = ft_strjoin(*possible_paths, command);
 		fd = access(cmd_path, F_OK);
 		if (fd == 0)
-			return(cmd_path);
+			return (cmd_path);
 		possible_paths++;
 		free(cmd_path);
 	}

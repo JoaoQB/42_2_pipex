@@ -330,9 +330,9 @@ If so we can then use that path to execve(), if not we must display an error mes
 
 pseudocode:
 
-char	path
-char	my path
-char	cmd
+char	**path
+char	**my path
+char	*cmd
 
 path = split(env, ":");
 cmd = split(argv, " ");
@@ -342,3 +342,7 @@ while (path)
 		execute
 	else
 		command not found
+		clean
+
+
+Now that the program is executing, it's time to clean!

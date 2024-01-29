@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 16:13:14 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:21:32 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 			exit(EXIT_FAILURE);
 		}
 		else
-				get_doc(fd_in);
+			get_doc(fd_in);
 	}
 }
 

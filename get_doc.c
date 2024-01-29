@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 15:18:35 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 16:15:11 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:25:44 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*read_input(int *fd)
 	{
 		// if (!line)
 		// 	line = malloc(1);
-		write(fd[1], &buffer[0], 1);
+		write(fd, buffer, read_char);
 		read_char = read(0, buffer, 1);
 	}
 	// return(line);

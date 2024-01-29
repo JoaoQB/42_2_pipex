@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 12:19:01 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:56:45 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 		*fd_in = open(argv[1], O_RDONLY);
 		*fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 		if (*fd_in == -1 || *fd_out == -1)
-			ft_error("Error in open_files\n");
+		{
+			perror("Error in open_files\n");
+			exit(EXIT_FAILURE);
+		}
 		else
 		{
 			dup2(*fd_in, STDIN_FILENO);
@@ -30,7 +33,7 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 	{
 		*fd_out = open(argv[argc - 1], O_CREAT, O_WRONLY, O_TRUNC, 0644);
 		if (*fd_out == -1)
-			ft_error("Error in open_files\n");
+			perror("Error in open_files\n");
 		//dup2() terminal -> stdin_fileno;
 	}
 }
@@ -59,10 +62,10 @@ void	pipex(char *argv, char **envp)
 	pid_t	process_id;
 
 	if (pipe(pipe_end) < 0)
-		ft_error("Pipe error\n");
+		perror("Pipe error\n");
 	process_id = fork();
 	if (process_id < 0)
-		ft_error("Fork error\n");
+		perror("Fork error\n");
 	if (process_id == 0)
 		child_process(pipe_end, argv, envp);
 	else

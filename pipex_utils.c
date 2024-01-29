@@ -6,17 +6,11 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 12:46:28 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:57:45 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	ft_error(char *string)
-{
-	perror(string);
-	// exit(EXIT_FAILURE);
-}
 
 void	ft_free_doublearray(char **argv)
 {
@@ -75,10 +69,10 @@ void	execute(char *argv, char **envp)
 	command = ft_split(argv, ' ');
 	possible_paths = get_paths(envp);
 	if (!command)
-		ft_error("");
+		perror("");
 	command_path = check_paths(possible_paths, *command);
 	if (!command_path)
-		ft_error("command not found");
+		perror("command not found");
 	else
 		execve(command_path, command, envp);
 	write(2, "reached cleaning child\n", 24);

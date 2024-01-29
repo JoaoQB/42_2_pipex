@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/25 17:57:32 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:46:28 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,10 @@ char	*check_paths(char **possible_paths, char *command)
 		if (fd == 0)
 			return(cmd_path);
 		possible_paths++;
+		free(cmd_path);
 	}
 	return (NULL);
 }
-
-static int		i;
 
 void	execute(char *argv, char **envp)
 {
@@ -79,9 +78,12 @@ void	execute(char *argv, char **envp)
 		ft_error("");
 	command_path = check_paths(possible_paths, *command);
 	if (!command_path)
-		printf("command not found: %s", *command);
-	execve(command_path, command, envp);
+		ft_error("command not found");
+	else
+		execve(command_path, command, envp);
+	write(2, "reached cleaning child\n", 24);
 	free(command_path);
 	ft_free_doublearray(command);
 	ft_free_doublearray(possible_paths);
+	write(2, "finished cleaning\n", 19);
 }

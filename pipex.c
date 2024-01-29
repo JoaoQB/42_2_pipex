@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 12:56:45 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 13:01:50 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 		*fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 		if (*fd_in == -1 || *fd_out == -1)
 		{
-			perror("Error in open_files\n");
+			perror("");
 			exit(EXIT_FAILURE);
 		}
 		else
@@ -40,16 +40,14 @@ void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 
 void	child_process(int *pipe_end, char *argv, char **envp)
 {
-	write(2, "reached child\n", 14);
 	close(pipe_end[0]);
 	dup2(pipe_end[1], STDOUT_FILENO);
 	close(pipe_end[1]);
 	execute(argv, envp);
 }
 
-void	parent_process(int *pipe_end, char *argv, char **envp)
+void	parent_process(int *pipe_end)
 {
-	write(2, "reached parent\n", 15);
 	waitpid(0, NULL, 0);
 	close(pipe_end[1]);
 	dup2(pipe_end[0], STDIN_FILENO);
@@ -62,14 +60,14 @@ void	pipex(char *argv, char **envp)
 	pid_t	process_id;
 
 	if (pipe(pipe_end) < 0)
-		perror("Pipe error\n");
+		perror("");
 	process_id = fork();
 	if (process_id < 0)
-		perror("Fork error\n");
+		perror("");
 	if (process_id == 0)
 		child_process(pipe_end, argv, envp);
 	else
-		parent_process(pipe_end, argv, envp);
+		parent_process(pipe_end);
 }
 
 int	main(int argc, char **argv, char **envp)

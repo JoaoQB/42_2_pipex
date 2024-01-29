@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 12:57:45 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 13:02:04 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,10 @@ void	execute(char *argv, char **envp)
 		perror("");
 	command_path = check_paths(possible_paths, *command);
 	if (!command_path)
-		perror("command not found");
+		perror("");
 	else
 		execve(command_path, command, envp);
-	write(2, "reached cleaning child\n", 24);
 	free(command_path);
 	ft_free_doublearray(command);
 	ft_free_doublearray(possible_paths);
-	write(2, "finished cleaning\n", 19);
 }

@@ -6,3 +6,5 @@
 .vscode/
 pipex
 *.txt
+pipex-tester/
+PIPEX_TESTER/

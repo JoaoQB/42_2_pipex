@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:20:13 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/25 17:24:24 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:59:59 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_error(char *string);
 void	ft_free_doublearray(char **argv);
 void	pipex(char *argv, char **envp);
 int		ft_strcmp(const char *str, const char *str2);
-void	parent_process(int *pipe_end, char *argv, char **envp);
+void	parent_process(int *pipe_end);
 void	child_process(int *pipe_end, char *argv, char **envp);
 void	execute(char *argv, char **envp);
 char	**ft_split(char const *s, char c);

@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 16:21:32 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/30 10:25:03 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,17 @@
 
 void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
 {
-	if (ft_strcmp(argv[1], "here_doc") != 0)
+	*fd_in = open(argv[1], O_RDONLY);
+	*fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	if (*fd_in == -1 || *fd_out == -1)
 	{
-		*fd_in = open(argv[1], O_RDONLY);
-		*fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-		if (*fd_in == -1 || *fd_out == -1)
-		{
-			perror("");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			dup2(*fd_in, STDIN_FILENO);
-			close(*fd_in);
-		}
+		perror("");
+		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		*fd_out = open(argv[argc - 1], O_CREAT, O_WRONLY, O_TRUNC, 0644);
-		if (*fd_out == -1)
-		{
-			perror("");
-			exit(EXIT_FAILURE);
-		}
-		else
-			get_doc(fd_in);
+		dup2(*fd_in, STDIN_FILENO);
+		close(*fd_in);
 	}
 }
 
@@ -84,25 +70,15 @@ int	main(int argc, char **argv, char **envp)
 	if (argc >= 5)
 	{
 		open_files(argc, argv, &input_file, &output_file);
-		// if (ft_strcmp(argv[1], "here_doc" != 0))
-		// 	pipex(argv[i++], envp);
-		// else
-		// {
-		// 	i = 3;
-		// 	pipex(argv[i++], envp);
-		// }
 		while (i < (argc - 2))
-		{
-			if (ft_strcmp(argv[1], "here_doc") != 0)
-				pipex(argv[i++], envp);
-			else
-			{
-				i = 3;
-				pipex(argv[i++], envp);
-			}
-		}
+			pipex(argv[i++], envp);
 		dup2(output_file, STDOUT_FILENO);
 		close(output_file);
 		execute(argv[argc - 2], envp);
+	}
+	else
+	{
+		write(2, "Not enough parameters\n", 23);
+		exit(EXIT_FAILURE);
 	}
 }

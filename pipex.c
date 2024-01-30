@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/30 10:25:03 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:15:00 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int	main(int argc, char **argv, char **envp)
 			pipex(argv[i++], envp);
 		dup2(output_file, STDOUT_FILENO);
 		close(output_file);
-		execute(argv[argc - 2], envp);
+		// pipex(argv[i], envp);
+		execute(argv[i], envp);
 	}
 	else
 	{

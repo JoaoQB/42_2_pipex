@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/30 10:40:13 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:16:13 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,25 @@ void	execute(char *argv, char **envp)
 	char	**command;
 	char	**possible_paths;
 	char	*command_path;
+	int		i;
 
 	command = ft_split(argv, ' ');
 	possible_paths = get_paths(envp);
+	i = 0;
 	if (!command)
 		perror("");
 	command_path = check_paths(possible_paths, *command);
 	if (!command_path)
-		perror("command not found");
+	{
+		write(2, "command not found: ", 20);
+		while (argv[i])
+			write(2, &argv[i++], 1);
+		write(2, "\n", 1);
+	}
 	else
 		execve(command_path, command, envp);
 	free(command_path);
 	ft_free_doublearray(command);
 	ft_free_doublearray(possible_paths);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 11:20:13 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/29 12:59:59 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:41:22 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/wait.h> // Wait and waitpid function
 # include <fcntl.h> // Open function
 
-void	open_files(int argc, char **argv, int *fd_in, int *fd_out);
+void	open_file(int argc, char **argv, int *fd, int file_nbr);
 void	ft_error(char *string);
 void	ft_free_doublearray(char **argv);
 void	pipex(char *argv, char **envp);

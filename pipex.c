@@ -6,25 +6,35 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/30 14:15:00 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:46:42 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	open_files(int argc, char **argv, int *fd_in, int *fd_out)
+void	open_file(int argc, char **argv, int *fd, int file_nbr)
 {
-	*fd_in = open(argv[1], O_RDONLY);
-	*fd_out = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	if (*fd_in == -1 || *fd_out == -1)
+	if (file_nbr == 1)
 	{
-		perror("");
-		exit(EXIT_FAILURE);
+		*fd = open(argv[1], O_RDONLY);
+		if (*fd == -1)
+		{
+			perror("");
+			exit(EXIT_FAILURE);
+		}
+		dup2(*fd, STDIN_FILENO);
+		close(*fd);
 	}
 	else
 	{
-		dup2(*fd_in, STDIN_FILENO);
-		close(*fd_in);
+		*fd = open(argv[argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		if (*fd == -1)
+		{
+			perror("");
+			exit(EXIT_FAILURE);
+		}
+		dup2(*fd, STDOUT_FILENO);
+		close(*fd);
 	}
 }
 
@@ -60,6 +70,8 @@ void	pipex(char *argv, char **envp)
 		parent_process(pipe_end);
 }
 
+/*  valgrind --leak-check=yes --track-origins=yes
+ --track-fds=yes --trace-children=yes */
 int	main(int argc, char **argv, char **envp)
 {
 	int	input_file;
@@ -69,12 +81,10 @@ int	main(int argc, char **argv, char **envp)
 	i = 2;
 	if (argc >= 5)
 	{
-		open_files(argc, argv, &input_file, &output_file);
+		open_file(argc, argv, &input_file, 1);
 		while (i < (argc - 2))
 			pipex(argv[i++], envp);
-		dup2(output_file, STDOUT_FILENO);
-		close(output_file);
-		// pipex(argv[i], envp);
+		open_file(argc, argv, &output_file, 2);
 		execute(argv[i], envp);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/30 14:16:13 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:38:24 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	**get_paths(char **envp)
 	paths = *envp;
 	while (*paths != '/')
 		paths++;
+	if (!paths)
+		//new_string (Empty_path);
 	command_paths = ft_split(paths, ':');
 	return (command_paths);
 }

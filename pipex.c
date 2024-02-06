@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 12:11:52 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/01/31 12:46:42 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:43:17 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	child_process(int *pipe_end, char *argv, char **envp)
 
 void	parent_process(int *pipe_end)
 {
-	waitpid(0, NULL, 0);
+	waitpid(-1, NULL, 0);
 	close(pipe_end[1]);
 	dup2(pipe_end[0], STDIN_FILENO);
 	close(pipe_end[0]);

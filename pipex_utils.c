@@ -6,7 +6,7 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/02/06 16:35:31 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:46:33 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	execute(char *argv, char **envp)
 	if (!command_path)
 	{
 		write(2, "command not found: ", 20);
-		while (argv[i])
+		while (argv[i] && argv[i] != ' ')
 			write(2, &argv[i++], 1);
 		write(2, "\n", 1);
 	}

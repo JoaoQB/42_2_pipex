@@ -6,11 +6,29 @@
 /*   By: jqueijo- <jqueijo-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:31:57 by jqueijo-          #+#    #+#             */
-/*   Updated: 2024/02/05 14:38:24 by jqueijo-         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:13:21 by jqueijo-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+char	*ft_strdup(const char *s)
+{
+	char	*dest;
+	size_t	i;
+
+	dest = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[i] = 0;
+	return (dest);
+}
 
 void	ft_free_doublearray(char **argv)
 {
@@ -30,17 +48,21 @@ char	**get_paths(char **envp)
 	char	**command_paths;
 	char	*paths;
 
-	while (*envp)
+	paths = NULL;
+	if (*envp)
 	{
-		if (ft_strnstr(*envp, "PATH=", 5))
-			break ;
-		envp++;
+		while (*envp)
+		{
+			if (ft_strnstr(*envp, "PATH=", 5))
+				break ;
+			envp++;
+		}
+		paths = *envp;
 	}
-	paths = *envp;
-	while (*paths != '/')
-		paths++;
 	if (!paths)
-		//new_string (Empty_path);
+		paths = ft_strdup("no_paths");
+	while (*paths != '/' && *paths)
+		paths++;
 	command_paths = ft_split(paths, ':');
 	return (command_paths);
 }
